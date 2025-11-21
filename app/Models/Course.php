@@ -17,6 +17,7 @@ class Course extends Model
     use HasFactory, HasMedia, SoftDeletes;
 
     protected $fillable = [
+        'classroom_id',
         'title',
         'slug',
         'description',
@@ -29,6 +30,11 @@ class Course extends Model
         return [
             'status' => CourseStatus::class,
         ];
+    }
+
+    public function classroom(): BelongsTo
+    {
+        return $this->belongsTo(Classroom::class);
     }
 
     public function instructor(): BelongsTo

@@ -11,14 +11,16 @@ return new class extends Migration
     {
         Schema::create('courses', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->string('slug')->unique();
+            $table->foreignId('classroom_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->string('title')->nullable();
+            $table->string('slug')->nullable()->unique();
             $table->text('description')->nullable();
-            $table->foreignId('instructor_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('instructor_id')->nullable()->constrained('users')->cascadeOnDelete();
             $table->string('status')->default(CourseStatus::Draft->value);
             $table->timestamps();
             $table->softDeletes();
 
+            $table->index(['classroom_id', 'status']);
             $table->index(['instructor_id', 'status']);
         });
     }
